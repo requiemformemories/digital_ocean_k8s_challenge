@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  rules:
+  - host: "kube-challenge.fumitsuki.tw"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: nginx-srv
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - kube-challenge.fumitsuki.tw
+    secretName: k8s-challenge
